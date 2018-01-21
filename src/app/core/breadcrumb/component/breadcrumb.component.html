@@ -1,0 +1,6 @@
+<ul>
+  <li *ngFor="let item of breadcrumbs"
+      [routerLink]="item.link">
+    {{item.title}}/{{item.link}}
+  </li>
+</ul>
