@@ -6,8 +6,8 @@ var sass = require('gulp-sass');
 gulp.task('copy-and-inline-resource', copyHtml);
 
 function copyHtml() {
-    gulp.src('src/components/**/*.html')
-        .pipe(gulp.dest('./dist/components')).on('end', copyAssets);
+    gulp.src('./src/app/core/**/*.html')
+        .pipe(gulp.dest('./dist')).on('end', copyAssets);
 }
 
 function copyAssets () {
@@ -17,12 +17,12 @@ function copyAssets () {
         .pipe(gulp.dest('./dist/assets')).on('end', copyScss);
 }
 function copyScss () {
-    gulp.src('./src/components/**/*.scss')
-        .pipe(gulp.dest('./dist/components')).on('end', inlineResource);
+    gulp.src('./src/app/core/**/*.scss')
+        .pipe(gulp.dest('./dist')).on('end', inlineResource);
 }
 
 function inlineResource() {
-    inlineResources('./dist/components');
+    inlineResources('./dist');
 }
 
 gulp.task('default', ['copy-and-inline-resource']);

@@ -15,13 +15,7 @@ export interface Breadcrumb {
 
 @Component({
   selector: 'ew-breadcrumb',
-  template: `
-  <nz-breadcrumb>
-      <nz-breadcrumb-item *ngFor="let item of breadcrumbs">
-          <a [routerLink]="[item?.link, item.params]">{{item.title}}</a>
-      </nz-breadcrumb-item>
-  </nz-breadcrumb>
-  `
+  templateUrl: './breadcrumb.component.html',
 })
 
 export class EwBreadcrumbComponent implements OnInit, OnDestroy {
