@@ -1,6 +1,8 @@
 
   <nz-breadcrumb>
-    <nz-breadcrumb-item *ngFor="let item of breadcrumbs">
-        <a [routerLink]="[item?.link, item.params]">{{item.title}}</a>
-    </nz-breadcrumb-item>
+    <ng-template ngFor let-item [ngForOf]="breadcrumbs">
+      <nz-breadcrumb-item>
+          <a (click)="navigateTo(item?.link, item.params)">{{item.title}}</a>
+      </nz-breadcrumb-item>
+    </ng-template>
 </nz-breadcrumb>

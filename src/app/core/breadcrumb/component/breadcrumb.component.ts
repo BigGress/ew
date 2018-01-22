@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { Router, NavigationEnd, Routes, Route, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -28,7 +28,9 @@ export class EwBreadcrumbComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private currentRoute: ActivatedRoute,
-  ) { }
+  ) {
+    // console.log(this);
+  }
 
   ngOnInit() {
     this.makeBread();
@@ -62,16 +64,24 @@ export class EwBreadcrumbComponent implements OnInit, OnDestroy {
       throw new Error('route isn\'t exist.');
     }
     let config = this.rotueConfig;
+    let skipCount = 0;
 
     urls.filter(e => {
       if (!!e) {
         return true;
       } else {
         // filter the root route config
-        const theRoute = this.rotueConfig.find(route => route.path === e);
+        let theRoute = this.rotueConfig.find(route => route.path === e);
+        // if root route has redirectTo then use the redirectTo
         if (theRoute) {
-          config = theRoute.loadChildren ? theRoute['_loadedConfig'].routes : theRoute.children;
+          if (theRoute.children && theRoute.children.length) {
+            config = theRoute.children;
+          }
 
+          if (theRoute.redirectTo) {
+            theRoute = this.rotueConfig.find(route => route.path === theRoute.redirectTo);
+          }
+          console.log(theRoute);
           if (this.isShowBreadcrumb(theRoute)) {
             this.addBreadcrumb(theRoute.data.breadcrumb, '');
           }
@@ -80,7 +90,17 @@ export class EwBreadcrumbComponent implements OnInit, OnDestroy {
         return false;
       }
     }).forEach((e, i) => {
+      console.log(e, config)
       let theRoute = config.find(route => route.path === e);
+
+      if (skipCount) {
+        skipCount--;
+        return;
+      }
+      if (!theRoute) {
+        theRoute = config.find(route => route.path.startsWith(e) && route.path.includes(':'));
+        skipCount = theRoute.path.split('').filter(chart => chart === ':').length;
+      }
 
       /**
        * handle route
@@ -138,5 +158,9 @@ export class EwBreadcrumbComponent implements OnInit, OnDestroy {
     } else {
       return name.title;
     }
+  }
+
+  navigateTo(link, params) {
+    this.router.navigateByUrl(link, {queryParams: params});
   }
 }
