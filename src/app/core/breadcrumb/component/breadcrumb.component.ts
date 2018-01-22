@@ -90,20 +90,20 @@ export class EwBreadcrumbComponent implements OnInit, OnDestroy {
       if (theRoute) {
         config = theRoute.loadChildren ? theRoute['_loadedConfig'].routes : theRoute.children;
 
+        if (config) {
+          const emptyRoute = config.find(route => route.path === '');
+          if (emptyRoute) {
+            if (!!emptyRoute.data.breadcrumb) {
+              theRoute = emptyRoute;
+            }
+          }
+        }
+
         if (this.isShowBreadcrumb(theRoute)) {
           // make parent breadcrumbs
           if (theRoute.data.breadcrumb.parent) {
             this.breadcrumbs = [];
             this.analyzeRotue(theRoute.data.breadcrumb.parent.split('/'));
-          }
-
-          if (config) {
-            const emptyRoute = config.find(route => route.path === '');
-            if (emptyRoute) {
-              if (!!emptyRoute.data.breadcrumb) {
-                theRoute = emptyRoute;
-              }
-            }
           }
           this.addBreadcrumb(theRoute.data.breadcrumb, `/${urls.slice(1, i + 2).join('/')}`);
         }
