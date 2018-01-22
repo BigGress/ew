@@ -90,12 +90,11 @@ export class EwBreadcrumbComponent implements OnInit, OnDestroy {
       if (theRoute) {
         config = theRoute.loadChildren ? theRoute['_loadedConfig'].routes : theRoute.children;
 
+        // if route children has empty route, then use empty route config
         if (config) {
           const emptyRoute = config.find(route => route.path === '');
-          if (emptyRoute) {
-            if (!!emptyRoute.data.breadcrumb) {
-              theRoute = emptyRoute;
-            }
+          if (emptyRoute && emptyRoute.data && emptyRoute.data.breadcrumb) {
+            theRoute = emptyRoute;
           }
         }
 
