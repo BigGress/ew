@@ -5,11 +5,12 @@ import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/toArray';
 
-interface Breadcrumb {
+export interface Breadcrumb {
   title: string;
   link?: string;
   parent?: string;
   skip?: boolean;
+  params?: any;
 }
 
 @Component({
@@ -35,7 +36,6 @@ export class EwBreadcrumbComponent implements OnInit, OnDestroy {
     const routeChange = this.router.events
         .filter(e => e instanceof NavigationEnd)
         .subscribe(e => {
-          console.log(this.router);
           this.makeBread();
         });
 
@@ -132,12 +132,11 @@ export class EwBreadcrumbComponent implements OnInit, OnDestroy {
   }
 
   // show breadcrumb name
-  showBreadName(breadcrumb: string | Breadcrumb) {
-    console.log(typeof breadcrumb, breadcrumb);
-    if (typeof breadcrumb === 'string') {
-      return breadcrumb;
+  showBreadName(name: string | Breadcrumb) {
+    if (typeof name === 'string') {
+      return name;
     } else {
-      return breadcrumb.title;
+      return name.title;
     }
   }
 }

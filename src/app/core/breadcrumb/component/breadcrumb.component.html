@@ -1,6 +1,12 @@
-<ul>
-  <li *ngFor="let item of breadcrumbs"
+<!-- <ul>
+  <li *ngFor="let item of breadcrumbConfig"
       [routerLink]="item.link">
     {{item.title}}/{{item.link}}
   </li>
-</ul>
+</ul> -->
+
+<nz-breadcrumb>
+    <nz-breadcrumb-item *ngFor="let item of breadcrumbs">
+        <a [routerLink]="[item?.link, item.params]">{{item.title}}</a>
+    </nz-breadcrumb-item>
+</nz-breadcrumb>
