@@ -29,7 +29,6 @@ export class EwBreadcrumbComponent implements OnInit, OnDestroy {
     private router: Router,
     private currentRoute: ActivatedRoute,
   ) {
-    // console.log(this);
   }
 
   ngOnInit() {
@@ -81,7 +80,6 @@ export class EwBreadcrumbComponent implements OnInit, OnDestroy {
           if (theRoute.redirectTo) {
             theRoute = this.rotueConfig.find(route => route.path === theRoute.redirectTo);
           }
-          console.log(theRoute);
           if (this.isShowBreadcrumb(theRoute)) {
             this.addBreadcrumb(theRoute.data.breadcrumb, '');
           }
@@ -90,7 +88,6 @@ export class EwBreadcrumbComponent implements OnInit, OnDestroy {
         return false;
       }
     }).forEach((e, i) => {
-      console.log(e, config)
       let theRoute = config.find(route => route.path === e);
 
       if (skipCount) {
@@ -131,7 +128,7 @@ export class EwBreadcrumbComponent implements OnInit, OnDestroy {
     });
   }
 
-  // 添加面包屑
+  // add breadcrumb
   addBreadcrumb(name: string, link: string) {
     this.breadcrumbs.push({
       title: this.showBreadName(name),
@@ -140,7 +137,6 @@ export class EwBreadcrumbComponent implements OnInit, OnDestroy {
   }
 
   isShowBreadcrumb(route: Route) {
-    // console.log(route);
     if (!route.data) {
       return false;
     }
