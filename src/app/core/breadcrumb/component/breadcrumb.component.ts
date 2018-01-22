@@ -49,17 +49,14 @@ export class EwBreadcrumbComponent implements OnInit, OnDestroy {
   makeBread() {
     this.breadcrumbs = [];
 
-    this.rotueConfig = this.router.config || this.router['routerConfig'];
+    this.rotueConfig = this.router.config;
     const url = this.router.url;
-
-    // console.log(this.currentRoute);
 
     this.analyzeRotue(url.split('/'));
   }
 
   // analyze route to make breadcrumb
   analyzeRotue(urls: string[]) {
-    // console.log(urls);
 
     if (!this.rotueConfig.length) {
       throw new Error('route isn\'t exist.');
@@ -72,8 +69,12 @@ export class EwBreadcrumbComponent implements OnInit, OnDestroy {
       } else {
         // filter the root route config
         const theRoute = this.rotueConfig.find(route => route.path === e);
-        if (theRoute && this.isShowBreadcrumb(theRoute)) {
-          this.addBreadcrumb(theRoute.data.breadcrumb, '');
+        if (theRoute) {
+          config = theRoute.loadChildren ? theRoute['_loadedConfig'].routes : theRoute.children;
+
+          if (this.isShowBreadcrumb(theRoute)) {
+            this.addBreadcrumb(theRoute.data.breadcrumb, '');
+          }
         }
 
         return false;
